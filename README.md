@@ -2,7 +2,5 @@
 AUTOMATIC1111/stable-diffusion-webui, containerized
 
 ```
-ghcr.io/thehonker/stable-diffusion-webui
+ghcr.io/thehonker/stable-diffusion-webui:(dev|master)-latest
 ```
-
-Track `main` tag at your own risk!
