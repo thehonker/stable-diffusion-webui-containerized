@@ -30,7 +30,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Get last commit hash for AUTOMATIC1111/stable-diffusion-webui
+      - name: Get last commit hash for AUTOMATIC1111/stable-diffusion-webui:master
         run: |
           git clone --single-branch --branch master https://github.com/AUTOMATIC1111/stable-diffusion-webui.git src/stable-diffusion-webui
           echo "LAST_COMMIT_HASH=$(cd src/stable-diffusion-webui && git --no-pager log -n 1 --pretty=format:"%H")" >> "$GITHUB_ENV"
@@ -40,8 +40,8 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           tags: |
-            type=schedule,enable=true,priority=900,pattern={{date 'YYYYMMDD'}},prefix=master
-            type=raw,value=${{ env.LAST_COMMIT_HASH }},priority=800,prefix=master
+            type=schedule,enable=true,priority=900,pattern={{date 'YYYYMMDD'}},prefix=master-
+            type=raw,value=${{ env.LAST_COMMIT_HASH }},priority=800,prefix=master-
           images: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
