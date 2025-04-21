@@ -1,4 +1,4 @@
-FROM docker.io/debian:trixie-slim
+FROM docker.io/ubuntu:24.04
 
 RUN set -exu \
   && export DEBIAN_FRONTEND=noninteractive \
