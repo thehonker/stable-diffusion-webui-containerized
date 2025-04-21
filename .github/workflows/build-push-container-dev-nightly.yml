@@ -1,4 +1,4 @@
-name: Build and Push stable-diffusion-webui Docker image
+name: Build and Push stable-diffusion-webui Docker image - Dev Branch - Nightly
 on:
   push:
     branches:
@@ -32,20 +32,19 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Get last commit hash for AUTOMATIC1111/stable-diffusion-webui
+      - name: Get last commit hash for AUTOMATIC1111/stable-diffusion-webui:dev
         run: |
-          git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git src/stable-diffusion-webui
-          cd src/stable-diffusion-webui
-          echo "LAST_COMMIT_HASH=$(git --no-pager log -n 1 --pretty=format:"%H")" >> "$GITHUB_ENV"
+          git clone --single-branch --branch dev https://github.com/AUTOMATIC1111/stable-diffusion-webui.git src/stable-diffusion-webui
+          echo "LAST_COMMIT_HASH=$(cd src/stable-diffusion-webui && git --no-pager log -n 1 --pretty=format:"%H")" >> "$GITHUB_ENV"
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@v5
         with:
           tags: |
-            type=schedule,enable=true,priority=1000,pattern=nightly
-            type=schedule,enable=true,priority=900,pattern={{date 'YYYYMMDD'}}
-            type=raw,value=${{ env.LAST_COMMIT_HASH }},priority=800
+            type=schedule,enable=true,priority=1000,pattern=nightly,prefix=dev
+            type=schedule,enable=true,priority=900,pattern={{date 'YYYYMMDD'}},prefix=dev
+            type=raw,value=${{ env.LAST_COMMIT_HASH }},priority=800,prefix=dev
           images: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
