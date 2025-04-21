@@ -4,11 +4,11 @@ echo "entrypoint.sh start"
 
 if [ -n $FORCE_REINSTALL ]; then
   echo "Forcing reinstall"
-  rm -rvf "${HOME}/stable-diffusion-webui"
-  cp -rv /stable-diffusion-webui-base "${HOME}/stable-diffusion-webui"
+  find "${HOME}/stable-diffusion-webui/" -name .* -o -prune -exec rm -rf -- {} +
+  cp -rv /stable-diffusion-webui-base/* /stable-diffusion-webui-base/.* "${HOME}/stable-diffusion-webui"
 elif [ ! -d "${HOME}/stable-diffusion-webui" ]; then
   echo "Copying stable-diffusion-webui repo to persistent directory"
-  cp -rv /stable-diffusion-webui-base "${HOME}/stable-diffusion-webui"
+  cp -rv /stable-diffusion-webui-base/* /stable-diffusion-webui-base/.* "${HOME}/stable-diffusion-webui"
 else
   echo "Found existing stable-diffusion-webui directory, using that"
 fi
