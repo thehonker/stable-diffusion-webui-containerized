@@ -1,5 +1,7 @@
 FROM docker.io/ubuntu:24.04
 
+USER root
+
 RUN set -exu \
   && export DEBIAN_FRONTEND=noninteractive \
   && apt-get -yq update \
@@ -16,6 +18,8 @@ RUN set -exu \
   && apt-get -yq clean
 
 RUN set -exu \
+  && deluser ubuntu \
+  && delgroup ubuntu \
   && addgroup \
     --gid 1000 \
     sdwebui \
