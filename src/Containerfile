@@ -19,7 +19,6 @@ RUN set -exu \
 
 RUN set -exu \
   && deluser ubuntu \
-  && delgroup ubuntu \
   && addgroup \
     --gid 1000 \
     sdwebui \
