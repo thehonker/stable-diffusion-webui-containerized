@@ -17,6 +17,7 @@ RUN set -exu \
     libglib2.0-0 \
     libtcmalloc-minimal4 \
     bc \
+    pciutils \
   && apt-get -yq clean
 
 RUN set -exu \
