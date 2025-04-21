@@ -1,4 +1,4 @@
-FROM docker.io/ubuntu:24.04
+FROM docker.io/debian:bullseye-slim
 
 USER root
 
@@ -18,7 +18,6 @@ RUN set -exu \
   && apt-get -yq clean
 
 RUN set -exu \
-  && deluser ubuntu \
   && addgroup \
     --gid 1000 \
     sdwebui \
