@@ -15,6 +15,7 @@ RUN set -exu \
     python3-venv \
     libgl1 \
     libglib2.0-0 \
+    libtcmalloc-minimal4 \
   && apt-get -yq clean
 
 RUN set -exu \
