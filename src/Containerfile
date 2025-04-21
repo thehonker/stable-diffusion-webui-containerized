@@ -32,7 +32,7 @@ RUN set -exu \
 USER sdwebui
 WORKDIR /home/sdwebui
 
-COPY ./stable-diffusion-webui /home/sdwebui/stable-diffusion-webui
+COPY --chown=sdwebui:sdwebui ./stable-diffusion-webui /home/sdwebui/stable-diffusion-webui
 
 ENTRYPOINT ["/bin/bash"]
 CMD ["/home/sdwebui/stable-diffusion-webui/webui.sh"]
