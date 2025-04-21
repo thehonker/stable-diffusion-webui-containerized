@@ -36,7 +36,7 @@ jobs:
         run: |
           git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git src/stable-diffusion-webui
           cd src/stable-diffusion-webui
-          $LAST_COMMIT_HASH=$(git log -n 1 --pretty=format:"%H")
+          LAST_COMMIT_HASH=$(git --no-pager log -n 1 --pretty=format:"%H")
           echo "LAST_COMMIT_HASH=${LAST_COMMIT_HASH}" >> $GITHUB_ENV
 
       - name: Extract metadata (tags, labels) for Docker
