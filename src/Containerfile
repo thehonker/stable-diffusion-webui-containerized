@@ -34,7 +34,8 @@ RUN set -exu \
 USER sdwebui
 WORKDIR /home/sdwebui
 
-COPY --chown=sdwebui:sdwebui ./stable-diffusion-webui /home/sdwebui/stable-diffusion-webui
+COPY ./stable-diffusion-webui /stable-diffusion-webui-base
+COPY ./entrypoint.sh /entrypoint.sh
 
 ENTRYPOINT ["/bin/bash"]
-CMD ["/home/sdwebui/stable-diffusion-webui/webui.sh"]
+CMD ["/entrypoint.sh"]
