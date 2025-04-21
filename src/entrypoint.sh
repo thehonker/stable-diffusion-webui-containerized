@@ -2,7 +2,7 @@
 
 echo "entrypoint.sh start"
 
-if [-n $FORCE_REINSTALL ]; then
+if [ -n $FORCE_REINSTALL ]; then
   echo "Forcing reinstall"
   rm -rvf "${HOME}/stable-diffusion-webui"
   cp -rv /stable-diffusion-webui-base "${HOME}/stable-diffusion-webui"
