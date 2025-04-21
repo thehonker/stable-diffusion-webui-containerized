@@ -40,6 +40,7 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           tags: |
+            type=raw,value=latest,priority=850,prefix=master-
             type=schedule,enable=true,priority=900,pattern={{date 'YYYYMMDD'}},prefix=master-
             type=raw,value=${{ env.LAST_COMMIT_HASH }},priority=800,prefix=master-
           images: |
