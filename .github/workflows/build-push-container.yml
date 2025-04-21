@@ -1,0 +1,63 @@
+name: Build and Push stable-diffusion-webui Docker image
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: "0 0 * * *"
+  workflow_dispatch: {}
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: thehonker/stable-diffusion-webui
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get last commit hash for AUTOMATIC1111/stable-diffusion-webui
+        run: |
+          git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git src/stable-diffusion-webui
+          cd src/stable-diffusion-webui
+          $LAST_COMMIT_HASH=$(git log -n 1 --pretty=format:"%H")
+          echo "LAST_COMMIT_HASH=${LAST_COMMIT_HASH}" >> $GITHUB_ENV
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          tags: |
+            type=schedule,enable=true,priority=1000,pattern=nightly
+            type=schedule,enable=true,priority=900,pattern={{date 'YYYYMMDD'}}
+            type=raw,value=$LAST_COMMIT_HASH,priority=800
+          images: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: src/
+          file: src/Containerfile
+          platforms: linux/amd64
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
